@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARLAK AY - 3D Web Tarayıcı</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: radial-gradient(circle at top, #1b2735 0%, #090a0f 100%);
+            color: #ffffff;
+            padding: 25px 15px;
+        }
+
+        /* Üst Kısım: 3D Ay ve Başlık */
+        .header-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 22px;
+            transition: all 0.4s ease;
+        }
+
+        .moon-3d {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e6e8ec 35%, #9aa0a6 75%, #202124 100%);
+            box-shadow: 
+                inset -18px -18px 30px rgba(0, 0, 0, 0.85),
+                inset 6px 6px 18px rgba(255, 255, 255, 0.9),
+                0 0 35px rgba(255, 255, 255, 0.45),
+                0 0 70px rgba(135, 206, 250, 0.3);
+            position: relative;
+            animation: floatMoon 4s ease-in-out infinite;
+        }
+
+        .moon-3d::before {
+            content: '';
+            position: absolute;
+            top: 28%;
+            left: 25%;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.09);
+            box-shadow: 
+                30px 12px 0 -3px rgba(0, 0, 0, 0.07),
+                12px 38px 0 -2px rgba(0, 0, 0, 0.09),
+                42px 35px 0 -5px rgba(0, 0, 0, 0.06);
+        }
+
+        @keyframes floatMoon {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+
+        .brand-title {
+            margin-top: 15px;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            user-select: none;
+        }
+
+        /* Cam Efektli Modern Arama Çubuğu */
+        .search-box {
+            display: flex;
+            width: 100%;
+            max-width: 550px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50px;
+            padding: 6px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .search-box:focus-within {
+            border-color: #ffffff;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+        }
+
+        .search-box input
