@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARLAK AY</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #121212;
+            transition: background-color 0.3s ease;
+        }
+        .container {
+            text-align: center;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            max-width: 420px;
+            width: 85%;
+        }
+        .text-logo {
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #111;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border: 3px solid #111;
+            border-radius: 10px;
+            display: inline-block;
+            user-select: none;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 260px;
+            background: #f0f0f0;
+            padding: 8px 14px;
+            border-radius: 8px;
+        }
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+        input[type="color"] {
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="text-logo" id="brandLogo">PARLAK AY</div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="bgColor">Arka Plan Rengi:</label>
+                <input type="color" id="bgColor" value="#121212">
+            </div>
+            <div class="control-group">
+                <label for="logoColor">Logo Rengi:</label>
+                <input type="color" id="logoColor" value="#111111">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bgColorInput = document.getElementById('bgColor');
+        const logoColorInput = document.getElementById('logoColor');
+        const brandLogo = document.getElementById('brandLogo');
+
+        bgColorInput.addEventListener('input', (e) => {
+            document.body.style.backgroundColor = e.target.value;
+        });
+
+        logoColorInput.addEventListener('input', (e) => {
+            brandLogo.style.color = e.target.value;
+            brandLogo.style.borderColor = e.target.value;
+        });
+    </script>
+
+</body>
+</html>
