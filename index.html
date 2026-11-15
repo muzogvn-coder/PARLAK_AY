@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARLAK AY</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            transition: background 0.4s ease;
+        }
+
+        /* Sağ Üst Arka Plan Rengi Seçici */
+        .theme-bar {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .theme-picker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 6px 14px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .theme-picker input[type="color"] {
+            border: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .reset-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Ana Kapsayıcı */
+        .main-container {
+            width: 100%;
+            max-width: 750px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Arama yapıldığında üst kısım kompakt hale gelir */
+        .main-container.compact {
+            margin-top: 0;
+        }
+        .main-container.compact .moon-3d {
+            width: 65px;
+            height: 65px;
+        }
+        .main-container.compact .brand-title {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        /* 3 Boyutlu Parlayan Ay */
+        .moon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .moon-3d {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e2e8f0 30%, #64748b 70%, #0f172a 100%);
+            box-shadow: 
+                inset -22px -22px 35px rgba(0, 0, 0, 0.9),
+                inset 8px 8px 20px rgba(255, 255, 255, 0.95),
+                0 0 40px rgba(255, 255, 255, 0.45),
+                0 0 80px rgba(129, 140, 248, 0.35);
+            animation: floatMoon 4s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes floatMoon {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .brand-title {
+            margin-top: 16px;
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
+            text-align: center;
+        }
+
+        /* Arama Kutusu */
+        .search-box {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 50px;
+            padding: 7px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            margin-bottom: 18px;
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-box button {
+            background: #ffffff;
+            color: #0f172a;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .search-box button:hover {
+            transform: scale(1.03);
+        }
+
+        /* Hızlı Kısayollar */
+        .quick-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 7px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .tag:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* PARLAK AY İçinde Açılan Arama Sonuçları Alanı */
+        .results-area {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 10px 18px;
+            border-radius: 14px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Özet Bilgi Kartı */
+        .summary-card {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+            display: none;
+        }
+
+        .summary-top {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .summary-top img {
+            width: 90px;
+            height: 90px;
+            border-radius: 12px;
+            object-fit: cover;
+            display: none;
+        }
+
+        .summary-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .summary-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+
+        /* Dahili Arama Sonuçları Çerçevesi */
+        .search-frame {
+            width: 100%;
+            height: 550px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
+            background: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Arka Plan Rengi Kişiselleştirme Çubuğu -->
+    <div class="theme-bar">
+        <div class="theme-picker">
+            <label for="bgPicker">🎨 Arka Plan:</label>
+            <input type="color" id="bgPicker" value="#1b2735">
+            <button class="reset-btn" onclick="varsayilanTema()">Uzay Teması</button>
+        </div>
+    </div>
+
+    <div class="main-container" id="mainContainer">
+        <!-- Logo ve 3D Ay (Tıklayınca ana ekrana döner) -->
+        <div class="moon-container" onclick="anaSayfayaDon()">
+            <div class="moon-3d"></div>
+            <div class="brand-title">PARLAK AY</div>
+        </div>
+
+        <!-- Arama Çubuğu -->
+        <div class="search-box">
+            <input type="text" id="userInput" placeholder="PARLAK AY'da ara veya site yaz..." onkeypress="enterKontrol(event)" autofocus>
+            <button onclick="parlakAyAra()">Bul</button>
+        </div>
+
+        <!-- Hızlı Kısayollar -->
+        <div class="quick-tags">
+            <span class="tag" onclick="hizliAra('Sevda Papağanı')">🦜 Sevda Papağanı</span>
+            <span class="tag" onclick="hizliAra('Hint Bülbülü')">🐦 Hint Bülbülü</span>
+            <span class="tag" onclick="hizliAra('Lepistes Balığı')">🐠 Lepistes</span>
+            <span class="tag" onclick="hizliAra('Hava Durumu')">🌤️ Hava Durumu</span>
+        </div>
+
+        <!-- PARLAK AY Özel Sonuç Ekranı -->
+        <div class="results-area" id="resultsArea">
+            <div class="results-header">
+                <span id="searchStatus">PARLAK AY Arama Sonuçları</span>
+                <span style="cursor:pointer; text-decoration:underline;" onclick="anaSayfayaDon()">Kapat ✕</span>
+            </div>
+
+            <!-- Konu Özeti Kartı -->
+            <div class="summary-card" id="summaryCard">
+                <div class="summary-top">
+                    <img id="summaryImg" src="" alt="">
+                    <div>
+                        <div class="summary-title" id="summaryTitle"></div>
+                        <div style="font-size:12px; color:#94a3b8;">PARLAK AY Bilgi Özeti</div>
+                    </div>
+                </div>
+                <div class="summary-text" id="summaryText"></div>
+            </div>
+
+            <!-- Tüm Web Sonuçlarını Sayfa İçinde Gösteren Alan -->
+            <iframe id="searchFrame" class="search-frame"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Kayıtlı Arka Plan Rengini Yükle
+        const bgPicker = document.getElementById('bgPicker');
+        const kayitliRenk = localStorage.getItem('parlakAyBg');
+        if (kayitliRenk) {
+            document.body.style.background = kayitliRenk;
+            bgPicker.value = kayitliRenk;
+        }
+
+        // Arka Plan Rengi Değiştirme
+        bgPicker.addEventListener('input', (e) => {
+            const secilenRenk = e.target.value;
+            document.body.style.background = secilenRenk;
+            localStorage.setItem('parlakAyBg', secilenRenk);
+        });
+
+        function varsayilanTema() {
+            const uzay = 'radial-gradient(circle at center, #1b2735 0%, #090a0f 100%)';
+            document.body.style.background = uzay;
+            localStorage.removeItem('parlakAyBg');
+        }
+
+        function anaSayfayaDon() {
+            document.getElementById('resultsArea').style.display = 'none';
+            document.getElementById('mainContainer').classList.remove('compact');
+            document.getElementById('userInput').value = '';
+        }
+
+        function hizliAra(terim) {
+            document.getElementById('userInput').value = terim;
+            parlakAyAra();
+        }
+
+        function enterKontrol(e) {
+            if (e.key === 'Enter') {
+                parlakAyAra();
+            }
+        }
+
+        async function parlakAyAra() {
+            const metin = document.getElementById('userInput').value.trim();
+            if (!metin) return;
+
+            const mainContainer = document.getElementById('mainContainer');
+            const resultsArea = document.getElementById('resultsArea');
+            const searchStatus = document.getElementById('searchStatus');
+            const summaryCard = document.getElementById('summaryCard');
+            const summaryImg = document.getElementById('summaryImg');
+            const summaryTitle = document.getElementById('summaryTitle');
+            const summaryText = document.getElementById('summaryText');
+            const searchFrame = document.getElementById('searchFrame');
+
+            mainContainer.classList.add('compact');
+            resultsArea.style.display = 'flex';
+            summaryCard.style.display = 'none';
+            searchStatus.textContent = `PARLAK AY • "${metin}" sonuçları`;
+
+            // Doğrudan web adresi girildiyse
+            if (metin.startsWith('http://') || metin.startsWith('https://') || (metin.includes('.') && !metin.includes(' '))) {
+                const url = metin.startsWith('http') ? metin : 'https://' + metin;
+                searchFrame.src = url;
+                return;
+            }
+
+            // 1. Adım: Tüm web sonuçlarını kendi sayfanın içinde aç (Google yerine sayfa içi çerçevede)
+            searchFrame.src = `https://www.bing.com/search?q=${encodeURIComponent(metin)}`;
+
+            // 2. Adım: Konuyla ilgili ansiklopedik özet varsa en üste kart olarak ekle
+            try {
+                const res = await fetch(`https://tr.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(metin)}&srlimit=1&format=json&origin=*`);
+                const data = await res.json();
+                if (data.query && data.query.search.length > 0) {
+                    const baslik = data.query.search[0].title;
+                    const ozetRes = await fetch(`https://tr.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(baslik)}`);
+                    const ozetData = await ozetRes.json();
+
+                    if (ozetData.extract) {
+                        summaryTitle.textContent = ozetData.title;
+                        summaryText.textContent = ozetData.extract;
+                        if (ozetData.thumbnail && ozetData.thumbnail.source) {
+                            summaryImg.src = ozetData.thumbnail.source;
+                            summaryImg.style.display = 'block';
+                        } else {
+                            summaryImg.style.display = 'none';
+                        }
+                        summaryCard.style.display = 'block';
+                    }
+                }
+            } catch (err) {
+                // Özet bulunamazsa alt taraftaki web sonuçları sorunsuz çalışmaya devam eder
+            }
+        }
+    </script>
+</body>
+</html>
